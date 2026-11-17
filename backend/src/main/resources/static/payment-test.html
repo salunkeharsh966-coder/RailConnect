@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RailConnect | Test Payment</title>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #0f172a;
+            color: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 470px;
+            padding: 32px;
+            border: 1px solid #334155;
+            border-radius: 18px;
+            background: #1e293b;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .brand {
+            color: #60a5fa;
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            margin-top: 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 12px;
+            margin-top: 18px;
+            border-radius: 20px;
+            background: #164e63;
+            color: #67e8f9;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .details {
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 12px;
+            background: #0f172a;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #334155;
+            font-size: 14px;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .amount-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .amount-label {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .amount {
+            margin-top: 8px;
+            color: #4ade80;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        #result {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 9px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.6;
+            font-size: 13px;
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+
+        #result.success {
+            display: block;
+            border: 1px solid #166534;
+            color: #86efac;
+        }
+
+        #result.error {
+            display: block;
+            border: 1px solid #991b1b;
+            color: #fca5a5;
+        }
+
+        #result.warning {
+            display: block;
+            border: 1px solid #92400e;
+            color: #fcd34d;
+        }
+
+        .footer {
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="brand">🚆 RailConnect</div>
+
+        <p class="subtitle">
+            Railway Reservation System
+        </p>
+
+        <span class="badge">
+            RAZORPAY TEST MODE
+        </span>
+
+        <div class="details">
+
+            <div class="detail-row">
+                <span class="detail-label">Booking ID</span>
+                <span class="detail-value" id="bookingId">15</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Passenger</span>
+                <span class="detail-value">Refund Test Passenger</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Journey Date</span>
+                <span class="detail-value">11 November 2026</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Travel Class</span>
+                <span class="detail-value">3A</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Passengers</span>
+                <span class="detail-value">1</span>
+            </div>
+
+        </div>
+
+        <div class="amount-section">
+
+            <div class="amount-label">
+                Total Payment Amount
+            </div>
+
+            <div class="amount" id="amountDisplay">
+                ₹1,000
+            </div>
+
+        </div>
+
+        <button id="payButton" onclick="startPayment()">
+            Pay ₹1,000
+        </button>
+
+        <div id="result"></div>
+
+        <div class="footer">
+            RailConnect Test Environment<br>
+            No real payment should be made using test credentials.
+        </div>
+
+    </main>
+
+    <script>
+
+        // ==========================================
+        // BOOKING CONFIGURATION
+        // ==========================================
+
+        const bookingId = 15;
+
+        const button = document.getElementById("payButton");
+        const result = document.getElementById("result");
+        const amountDisplay = document.getElementById("amountDisplay");
+
+        let paymentVerificationStarted = false;
+
+        // ==========================================
+        // DISPLAY RESULT
+        // ==========================================
+
+        function showResult(message, type = "warning") {
+
+            result.className = type;
+            result.style.display = "block";
+            result.textContent = message;
+        }
+
+        // ==========================================
+        // FORMAT RUPEES
+        // ==========================================
+
+        function formatRupees(amountPaise) {
+
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 2
+            }).format(amountPaise / 100);
+        }
+
+        // ==========================================
+        // START RAZORPAY PAYMENT
+        // ==========================================
+
+        async function startPayment() {
+
+            if (paymentVerificationStarted) {
+                showResult(
+                    "Payment verification is already in progress. Do not start another payment.",
+                    "warning"
+                );
+                return;
+            }
+
+            if (!window.Razorpay) {
+
+                showResult(
+                    "Razorpay Checkout could not be loaded. Check your internet connection and reload the page.",
+                    "error"
+                );
+
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = "Preparing Payment...";
+
+            showResult(
+                "Connecting to RailConnect backend and retrieving payment order..."
+            );
+
+            try {
+
+                // ==================================
+                // STEP 1: CREATE / RECOVER ORDER
+                // ==================================
+
+                const orderResponse = await fetch(
+                    `/api/payments?bookingId=${bookingId}&paymentMethod=RAZORPAY`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                const orderData = await orderResponse.json();
+
+                if (!orderResponse.ok) {
+
+                    throw new Error(
+                        orderData.message ||
+                        "Unable to create or recover Razorpay order."
+                    );
+                }
+
+                // ==================================
+                // STEP 2: VALIDATE ORDER DETAILS
+                // ==================================
+
+                if (
+                    !orderData.keyId ||
+                    !orderData.orderId ||
+                    !orderData.amount ||
+                    !orderData.currency
+                ) {
+
+                    throw new Error(
+                        "Backend returned missing Razorpay details. "
+                        + "Check Key ID and Order ID in the backend response."
+                    );
+                }
+
+                if (!String(orderData.keyId).startsWith("rzp_test_")) {
+
+                    throw new Error(
+                        "This test page requires Razorpay Test Mode credentials."
+                    );
+                }
+
+                if (!String(orderData.orderId).startsWith("order_")) {
+
+                    throw new Error(
+                        "Invalid Razorpay Order ID received from backend."
+                    );
+                }
+
+                if (
+                    Number(orderData.amount) !== 100000 ||
+                    orderData.currency !== "INR" ||
+                    Number(orderData.bookingId) !== bookingId
+                ) {
+
+                    throw new Error(
+                        "Payment amount, currency or booking ID does not match."
+                    );
+                }
+
+                amountDisplay.textContent =
+                    formatRupees(orderData.amount);
+
+                button.textContent = "Opening Razorpay Checkout...";
+
+                showResult(
+                    "Order successfully retrieved.\n"
+                    + "Booking ID: " + bookingId + "\n"
+                    + "Amount: " + formatRupees(orderData.amount) + "\n"
+                    + "Currency: " + orderData.currency + "\n\n"
+                    + "Opening Razorpay Checkout..."
+                );
+
+                // ==================================
+                // STEP 3: RAZORPAY CHECKOUT OPTIONS
+                // ==================================
+
+                const options = {
+
+                    key: orderData.keyId,
+
+                    amount: orderData.amount,
+
+                    currency: orderData.currency,
+
+                    name: "RailConnect",
+
+                    description: "Refund Test Booking",
+
+                    order_id: orderData.orderId,
+
+                    handler: async function (paymentResponse) {
+
+                        paymentVerificationStarted = true;
+
+                        button.disabled = true;
+                        button.textContent = "Verifying Payment...";
+
+                        showResult(
+                            "Checkout returned payment details.\n"
+                            + "Sending them to the backend for verification..."
+                        );
+
+                        // ==============================
+                        // STEP 4: VERIFY PAYMENT
+                        // ==============================
+
+                        try {
+
+                            const verifyResponse = await fetch(
+                                "/api/payments/verify",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Accept": "application/json"
+                                    },
+
+                                    body: JSON.stringify(paymentResponse)
+                                }
+                            );
+
+                            const verifyData =
+                                await verifyResponse.json();
+
+                            if (!verifyResponse.ok) {
+
+                                showResult(
+                                    "Payment verification was not successful.\n\n"
+                                    + JSON.stringify(verifyData, null, 2)
+                                    + "\n\nDo not pay again. Check MySQL, Razorpay Dashboard and backend logs.",
+                                    "error"
+                                );
+
+                                return;
+                            }
+
+                            // ==============================
+                            // STEP 5: DISPLAY FINAL STATUS
+                            // ==============================
+
+                            if (
+                                verifyData.success === true &&
+                                verifyData.bookingStatus === "CONFIRMED"
+                            ) {
+
+                                showResult(
+                                    "🎉 PAYMENT SUCCESSFUL!\n\n"
+                                    + "Booking ID: " + bookingId + "\n"
+                                    + "Payment Status: SUCCESS\n"
+                                    + "Booking Status: CONFIRMED\n\n"
+                                    + "Seat allocation has been completed by the backend.\n"
+                                    + "Check your Postman booking and reservation APIs.",
+                                    "success"
+                                );
+
+                                button.textContent = "Payment Completed";
+
+                            } else {
+
+                                showResult(
+                                    "Payment callback was received, but booking confirmation needs attention.\n\n"
+                                    + JSON.stringify(verifyData, null, 2)
+                                    + "\n\nDo not make another payment.",
+                                    "warning"
+                                );
+
+                                button.textContent = "Verification Needs Attention";
+                            }
+
+                        } catch (verificationError) {
+
+                            showResult(
+                                "Payment callback received, but the backend verification request failed.\n\n"
+                                + verificationError.message
+                                + "\n\nDo not pay again. Verify payment status from Razorpay and MySQL.",
+                                "error"
+                            );
+
+                            button.textContent =
+                                "Check Payment Status";
+                        }
+                    },
+
+                    theme: {
+                        color: "#2563eb"
+                    },
+
+                    modal: {
+
+                        ondismiss: function () {
+
+                            if (!paymentVerificationStarted) {
+
+                                showResult(
+                                    "Checkout was closed. Check Razorpay payment status before attempting another payment.",
+                                    "warning"
+                                );
+
+                                button.disabled = false;
+                                button.textContent = "Retry After Checking Status";
+                            }
+                        }
+                    }
+                };
+
+                // ==================================
+                // STEP 6: OPEN CHECKOUT
+                // ==================================
+
+                const razorpay = new Razorpay(options);
+
+                razorpay.on("payment.failed", function (response) {
+
+                    showResult(
+                        "Razorpay reported a payment failure.\n\n"
+                        + JSON.stringify(response.error, null, 2)
+                        + "\n\nCheck the Razorpay Dashboard before retrying.",
+                        "error"
+                    );
+
+                    button.disabled = false;
+                    button.textContent = "Retry After Checking Status";
+                });
+
+                razorpay.open();
+
+            } catch (error) {
+
+                showResult(
+                    "Unable to start payment.\n\n"
+                    + error.message
+                    + "\n\nCheck the backend response before retrying.",
+                    "error"
+                );
+
+                button.disabled = false;
+                button.textContent = "Try Again";
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

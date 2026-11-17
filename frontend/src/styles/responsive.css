@@ -1,0 +1,149 @@
+/* ============================================================
+   RailConnect — Responsive rules
+   Mobile-first: base styles target small screens, these
+   breakpoints scale up. Nothing here should cause horizontal
+   overflow at any width.
+   ============================================================ */
+
+/* ---------- Small phones (<= 380px) ---------- */
+@media (max-width: 380px) {
+  :root {
+    --text-4xl: 2.1rem;
+    --text-3xl: 1.75rem;
+    --text-2xl: 1.4rem;
+  }
+
+  .container,
+  .container-narrow {
+    padding: 0 var(--space-4);
+  }
+
+  .btn {
+    padding: 0.65rem 1rem;
+    font-size: var(--text-sm);
+  }
+
+  .card-pad,
+  .card-body {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Phones (<= 640px) ---------- */
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .page {
+    padding: var(--space-5) 0 var(--space-12);
+  }
+
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .section-head {
+    margin-bottom: var(--space-8);
+  }
+
+  .section-head h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .page-head h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .modal-foot {
+    flex-direction: column-reverse;
+  }
+
+  .modal-foot .btn {
+    width: 100%;
+  }
+
+  .toast-viewport {
+    left: var(--space-3);
+    right: var(--space-3);
+    max-width: none;
+  }
+
+  .state-block {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .steps {
+    gap: var(--space-1);
+  }
+
+  .step-label {
+    display: none;
+  }
+
+  .step-line {
+    width: 18px;
+  }
+}
+
+/* ---------- Tablets (>= 641px) ---------- */
+@media (min-width: 641px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* ---------- Tablet and up (>= 768px) ---------- */
+@media (min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- Desktop (>= 1024px) ---------- */
+@media (min-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Wide (>= 1280px) ---------- */
+@media (min-width: 1280px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* ---------- Print (tickets) ---------- */
+@media print {
+  .no-print,
+  .navbar,
+  .footer,
+  .toast-viewport {
+    display: none !important;
+  }
+
+  body {
+    background: var(--white);
+  }
+
+  .page {
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid var(--ink-300);
+    break-inside: avoid;
+  }
+
+  .ticket-print {
+    max-width: 100%;
+  }
+}

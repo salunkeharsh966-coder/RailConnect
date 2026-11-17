@@ -1,0 +1,162 @@
+/* ============================================================
+   RailConnect — Design Tokens
+   Deep navy / midnight primary, royal blue accent,
+   green = confirmed/available, red = error/unavailable.
+   ============================================================ */
+
+:root {
+  /* ---------- Brand palette ---------- */
+  --navy-950: #060d1f;
+  --navy-900: #0a1428;
+  --navy-800: #0f1e3d;
+  --navy-700: #16294f;
+  --navy-600: #1e3563;
+  --navy-500: #27437a;
+
+  --royal-600: #1d4ed8;
+  --royal-500: #2563eb;
+  --royal-400: #3b82f6;
+  --royal-300: #60a5fa;
+  --royal-100: #dbeafe;
+  --royal-50: #eff6ff;
+
+  --sky-400: #38bdf8;
+  --sky-100: #e0f2fe;
+
+  /* ---------- Semantic ---------- */
+  --success-700: #15803d;
+  --success-600: #16a34a;
+  --success-500: #22c55e;
+  --success-100: #dcfce7;
+  --success-50: #f0fdf4;
+
+  --danger-700: #b91c1c;
+  --danger-600: #dc2626;
+  --danger-500: #ef4444;
+  --danger-100: #fee2e2;
+  --danger-50: #fef2f2;
+
+  --warning-700: #b45309;
+  --warning-600: #d97706;
+  --warning-500: #f59e0b;
+  --warning-100: #fef3c7;
+  --warning-50: #fffbeb;
+
+  --info-600: #0891b2;
+  --info-100: #cffafe;
+
+  /* ---------- Neutrals ---------- */
+  --white: #ffffff;
+  --off-white: #f7f9fc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-3: #e2e8f0;
+
+  --ink-900: #0f172a;
+  --ink-800: #1e293b;
+  --ink-700: #334155;
+  --ink-600: #475569;
+  --ink-500: #64748b;
+  --ink-400: #94a3b8;
+  --ink-300: #cbd5e1;
+  --ink-200: #e2e8f0;
+  --ink-100: #f1f5f9;
+
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* ---------- Typography ---------- */
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: "SFMono-Regular", "JetBrains Mono", Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 2.875rem;
+  --text-5xl: 3.5rem;
+
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* ---------- Radii ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 999px;
+
+  /* ---------- Shadows ---------- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08),
+    0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.1),
+    0 4px 10px rgba(15, 23, 42, 0.05);
+  --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.14),
+    0 8px 16px rgba(15, 23, 42, 0.06);
+  --shadow-royal: 0 10px 30px rgba(37, 99, 235, 0.28);
+  --shadow-navy: 0 16px 40px rgba(10, 20, 40, 0.32);
+
+  /* ---------- Gradients (used sparingly) ---------- */
+  --grad-navy: linear-gradient(135deg, #0a1428 0%, #16294f 55%, #1e3563 100%);
+  --grad-royal: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+  --grad-hero: linear-gradient(
+    160deg,
+    #060d1f 0%,
+    #0f1e3d 45%,
+    #1d4ed8 130%
+  );
+  --grad-sheen: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 380ms;
+
+  /* ---------- Layout ---------- */
+  --container: 1200px;
+  --container-narrow: 880px;
+  --navbar-h: 68px;
+  --z-nav: 100;
+  --z-dropdown: 200;
+  --z-modal: 400;
+  --z-toast: 600;
+}
